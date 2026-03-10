@@ -45,13 +45,13 @@ Points are awarded based on the guessing time and the accuracy of the guess.
 Below are screenshots from different stages of the game:
 
 ### How to Play Page
-![How to Play](images/nasil-oynanir.png)
+![How to Play](screenshots/how-to-play.png)
 
 ### Main Menu
-![Main Screen](images/ana-ekran.png)
+![Main Screen](screenshots/homescreen.png)
 
 ### Drawing Example
-![Drawing Stage](images/cizim-ornegi.png)
+![Drawing Stage](images/example.png)
 
 ---
 
