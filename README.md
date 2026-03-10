@@ -8,7 +8,7 @@ The core mechanics of the game have been recoded using the canvas element and en
 
 Descriptionary is a guessing game based on original and creative drawings.
 
-You can play the Let's Draw game [here](https://mlkyzgt.github.io/ciz-bakalim/).
+You can play the Let's Draw game [here](https://mlkyzgt.github.io/lets-draw/).
 
 ---
 
