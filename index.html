@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
-    <title>Çiz Bakalım</title>
+    <title>Let's Draw</title>
     <link href="https://fonts.googleapis.com/css2?family=DynaPuff&display=swap" rel="stylesheet">
 
     <style>
@@ -260,119 +260,111 @@
 <body>
     <div id="kurallarPenceresi" style="display: none;" class="modal">
         <div class="modal-icerik">
-            <!-- Pencereyi kapatma butonu -->
             <span id="kapat" class="kapat">&times;</span>
-            <h3>Nasıl Oynanılır?</h3>
-            <p>1. Her soruda adım adım çizim yönergeleri gelecektir.</p>
-            <p>2. Yönergeleri takip ederek nesneyi çizin.</p>
-            <p>3. Tahmininizi yazıp 'Tahmini Kontrol Et' butonuna tıklayın.</p>
-            <p>4. Doğru tahminlerde puan kazanırsınız. Ne kadar hızlı bulursanız o kadar fazla puan kazanırsınız!</p>
+            <h3>How to Play?</h3>
+            <p>1. Step-by-step drawing clues will appear for each question.</p>
+            <p>2. Draw the object by following the clues.</p>
+            <p>3. Type your guess and click the 'Check Guess' button.</p>
+            <p>4. You earn points for correct guesses. The faster you find it, the more points you get!</p>
         </div>
     </div>
 
     <section class="container" style="display: none;">
-        <h2>ÇİZ BAKALIM</h2>
-        <!-- Üst alanda yönergeler, skor, süre ve ses kontrol bulunur-->
+        <h2>LET's DRAW</h2>
         <div class="ustAlan">
             <div id="sorular">
-                <div id="yonergelerAlani">Yönerge:</div>
+                <div id="yonergelerAlani">Clue:</div>
                 <div id="yonergeBtn">
-                    <button id="oncekiYonergeBtn">Önceki Yönerge</button>
-                    <button id="sonrakiYonergeBtn">Sonraki Yönerge</button>
+                    <button id="oncekiYonergeBtn">Previous Clue</button>
+                    <button id="sonrakiYonergeBtn">Next Clue</button>
                 </div>
             </div>
 
-            <!-- Tahmin sonucu ve puan gösterimi -->
             <div id="sureVePuan">
-                <div id="sonucAlani">Sonuç: </div>
-                <div id="puanAlani">Toplam Puan: 0</div>
-                <p id="zamanSayaci">Süre: 60s</p>
-                <button id="sonrakiSoruBtn">Sonraki Soru</button>
+                <div id="sonucAlani">Result: </div>
+                <div id="puanAlani">Total Score: 0</div>
+                <p id="zamanSayaci">Time: 60s</p>
+                <button id="sonrakiSoruBtn">Next Question</button>
             </div>
 
-            <!-- Ses aç/kapat butonu -->
-            <button id="sesKontrolBtn" title="Sesi Aç/Kapat">🔊</button>
+            <button id="sesKontrolBtn" title="Mute/Unmute">🔊</button>
         </div>
 
-        <!-- Canvas ile yapılan çizim alanı ve maskot resmi -->
         <div id="cizimTahtasiVeMaskot">
             <canvas id="cizimTahtasi"></canvas>
-            <img src="./images/Maskot.png" alt="Maskot">
+            <img src="./images/Maskot.png" alt="Mascot">
         </div>
 
-        <!-- Alt alanda çizim araçları ve tahmin alanı bulunur -->
         <div class="altAlan">
             <div id="cizimAraclari">
                 <div class="araclarGrup">
-                    <label for="renk">Renk:</label>
+                    <label for="renk">Color:</label>
                     <input id="renk" type="color" value="#000000">
                 </div>
 
                 <div class="araclarGrup">
-                    <label for="kalinlik">Kalınlık:</label>
+                    <label for="kalinlik">Thickness:</label>
                     <input id="kalinlik" type="number" value="5" min="1" max="50">
                 </div>
 
-                <button id="temizle">Temizle</button>
+                <button id="temizle">Clear</button>
             </div>
 
-            <!-- Tahmin girme alanı ve kontrol butonu -->
             <div id="tahminAlani">
-                <label for="tahminInput" style="flex-shrink: 0;">Tahmininiz:</label>
-                <input id="tahminInput" type="text" placeholder="Tahmininizi yazın" />
-                <button id="tahminKontrolBtn">Tahmini Kontrol Et</button>
+                <label for="tahminInput" style="flex-shrink: 0;">Your Guess:</label>
+                <input id="tahminInput" type="text" placeholder="Type your guess" />
+                <button id="tahminKontrolBtn">Check Guess</button>
             </div>
         </div>
     </section>
 
-    <!-- Oyun script dosyası -->
     <script>
-        // HTML'den gerekli ögeler alınır.
+        // Get necessary elements from HTML
         const container = document.querySelector('.container');
         const canvas = document.getElementById('cizimTahtasi');
         const ctx = canvas.getContext('2d');
-        const renkInput = document.getElementById('renk');
-        const kalinlikInput = document.getElementById('kalinlik');
-        const temizleBtn = document.getElementById('temizle');
-        const yonergelerAlani = document.getElementById('yonergelerAlani');
-        const oncekiBtn = document.getElementById('oncekiYonergeBtn');
-        const sonrakiBtn = document.getElementById('sonrakiYonergeBtn');
-        const tahminInput = document.getElementById('tahminInput');
-        const tahminBtn = document.getElementById('tahminKontrolBtn');
-        const sonucAlani = document.getElementById('sonucAlani');
-        const puanAlani = document.getElementById('puanAlani');
-        const zamanSayaci = document.getElementById('zamanSayaci');
-        const sonrakiSoruBtn = document.getElementById('sonrakiSoruBtn');
+        const colorInput = document.getElementById('renk');
+        const thicknessInput = document.getElementById('kalinlik');
+        const clearBtn = document.getElementById('temizle');
+        const instructionsArea = document.getElementById('yonergelerAlani');
+        const prevBtn = document.getElementById('oncekiYonergeBtn');
+        const nextBtn = document.getElementById('sonrakiYonergeBtn');
+        const guessInput = document.getElementById('tahminInput');
+        const checkGuessBtn = document.getElementById('tahminKontrolBtn');
+        const resultArea = document.getElementById('sonucAlani');
+        const scoreArea = document.getElementById('puanAlani');
+        const timeCounter = document.getElementById('zamanSayaci');
+        const nextQuestionBtn = document.getElementById('sonrakiSoruBtn');
 
-        // Oyunla ilgili değişkenler tanımlanır
-        let kalinlik = 5;
-        let ciziyor = false;
-        let zaman = 60;
+        // Define game-related variables
+        let thickness = 5;
+        let isDrawing = false;
+        let timeLeft = 60;
         let timer;
-        let toplamPuan = 0;
-        let tahminSayisi = 0;
-        const maxTahmin = 3;
+        let totalScore = 0;
+        let guessCount = 0;
+        const maxGuesses = 3;
 
-        // Soru ve yönergeler tanımlanır
-        const sorular = [
-            { cevap: "ayı", yonergeler: ["Yuvarlak çiz", "Üst iki tarafa iki yuvarlak daha çiz", "Büyük yuvarlağın içine iki adet yuvarlak çiz"] },
-            { cevap: "araba", yonergeler: ["Dikdörtgen çiz", "Altına iki daire çiz", "Üstüne küçük bir dikdörtgen çiz"] },
-            { cevap: "tren", yonergeler: ["Arka arkaya üç dikdörtgen çiz", "Her birinin altına iki yuvarlak tekerlek çiz", "Ön kısmına baca ekle"] },
-            { cevap: "güneş", yonergeler: ["Ortaya büyük bir yuvarlak çiz", "Yuvarlağın etrafına çizgiler çiz", "Yuvarlağı sarıya boya"] },
-            { cevap: "kedi", yonergeler: ["Büyük bir yuvarlak çiz", "Üstüne iki üçgen çiz", "Yuvarlağın içinin üst tarafına iki küçük yuvarlak, yanlarına üçer çizgi çiz"] },
-            { cevap: "uçurtma", yonergeler: ["Dörtgen çiz", "Üstüne iki çizgi çiz", "Altından ip çiz"] },
-            { cevap: "bisiklet", yonergeler: ["İki büyük yuvarlak çiz", "Ortalarına küçük yuvarlak çiz", "İki yuvarlağı çizgi ile bağla"] },
-            { cevap: "kitap", yonergeler: ["Dikdörtgen çiz", "Ortadan ikiye ayır", "Sayfaları belirtmek için çizgiler çiz"] },
-            { cevap: "çiçek", yonergeler: ["Ortaya küçük yuvarlak çiz", "Etrafına yapraklar çiz", "Yaprakları renklendir"] },
-            { cevap: "ev", yonergeler: ["Kare çiz", "Üstüne üçgen çatı çiz", "Kapı ve pencere ekle"] },
-            { cevap: "kule", yonergeler: ["Dikdörtgen çiz", "Üstüne küçük üçgenler çiz", "Pencereler çiz"] },
+        // Define questions and clues
+        const questions = [
+            { answer: "bear", instructions: ["Draw a circle", "Draw two more circles on top of it", "Draw two small circles inside the big circle"] },
+            { answer: "car", instructions: ["Draw a rectangle", "Draw two circles underneath", "Draw a small rectangle on top"] },
+            { answer: "train", instructions: ["Draw three rectangles in a row", "Draw two round wheels under each one", "Add a chimney to the front"] },
+            { answer: "sun", instructions: ["Draw a big circle in the middle", "Draw lines around the circle", "Color the circle yellow"] },
+            { answer: "cat", instructions: ["Draw a big circle", "Draw two triangles on top", "Draw two small circles inside and three lines on the sides"] },
+            { answer: "kite", instructions: ["Draw a diamond shape", "Draw two lines across it", "Draw a string from the bottom"] },
+            { answer: "bicycle", instructions: ["Draw two big circles", "Draw small circles in their centers", "Connect the two circles with a line"] },
+            { answer: "book", instructions: ["Draw a rectangle", "Split it in half", "Draw lines to represent pages"] },
+            { answer: "flower", instructions: ["Draw a small circle in the middle", "Draw petals around it", "Color the petals"] },
+            { answer: "house", instructions: ["Draw a square", "Draw a triangle roof on top", "Add a door and window"] },
+            { answer: "tower", instructions: ["Draw a tall rectangle", "Draw small triangles on top", "Draw windows"] },
         ];
 
-        let aktifSoru = 0;
-        let aktifYonerge = 0;
+        let currentQuestion = 0;
+        let currentInstruction = 0;
 
-        // Canvas ayarlanır
-        function canvasAyarla() {
+        // Setup Canvas
+        function setupCanvas() {
             const dpr = window.devicePixelRatio || 1;
             canvas.width = (window.innerWidth - 40) * dpr;
             canvas.height = 400 * dpr;
@@ -380,202 +372,201 @@
             canvas.style.height = '400px';
             ctx.scale(dpr, dpr);
             ctx.lineCap = 'round';
-            ctx.strokeStyle = renkInput.value;
-            ctx.lineWidth = kalinlik;
+            ctx.strokeStyle = colorInput.value;
+            ctx.lineWidth = thickness;
         }
 
-        window.addEventListener('resize', canvasAyarla);
+        window.addEventListener('resize', setupCanvas);
 
-        // Oyun başlatıldığında gerekli hazırlıklar yapılır
-        function oyunuBaslat() {
+        // Prepare everything when the game starts
+        function startGame() {
             container.style.display = 'flex';
-            toplamPuan = 0;
-            aktifSoru = 0;
-            aktifYonerge = 0;
-            tahminSayisi = 0;
-            puanAlani.textContent = 'Toplam Puan: 0';
-            zamanSayaci.textContent = `Süre: ${zaman}s`;
-            soruGoster();
-            temizleCanvas();
-            tahminBtn.disabled = false;
-            sonucAlani.textContent = '';
+            totalScore = 0;
+            currentQuestion = 0;
+            currentInstruction = 0;
+            guessCount = 0;
+            scoreArea.textContent = 'Total Score: 0';
+            timeCounter.textContent = `Time: ${timeLeft}s`;
+            showQuestion();
+            clearCanvas();
+            checkGuessBtn.disabled = false;
+            resultArea.textContent = '';
         }
 
-
-        // Soru gösterme
-        function soruGoster() {
-            const soru = sorular[aktifSoru];
-            yonergelerAlani.textContent = "Yönerge: " + soru.yonergeler[aktifYonerge];
-            tahminSayisi = 0;
-            sonucAlani.textContent = '';
-            tahminBtn.disabled = false;
+        // Show Question
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            instructionsArea.textContent = "Clue: " + question.instructions[currentInstruction];
+            guessCount = 0;
+            resultArea.textContent = '';
+            checkGuessBtn.disabled = false;
         }
 
-        // Zamanlayıcı
-        function zamanBaslat() {
+        // Timer
+        function startTimer() {
             clearInterval(timer);
             timer = setInterval(() => {
-                zaman--;
-                zamanSayaci.textContent = `Süre: ${zaman}s`;
-                if (zaman <= 0) {
+                timeLeft--;
+                timeCounter.textContent = `Time: ${timeLeft}s`;
+                if (timeLeft <= 0) {
                     clearInterval(timer);
-                    alert('Süre doldu! Sonraki soruya geçiliyor.');
-                    sonrakiSoru();
+                    alert('Time is up! Moving to the next question.');
+                    nextQuestion();
                 }
             }, 1000);
         }
 
-        // Canvas temizle
-        temizleBtn.onclick = temizleCanvas;
-        function temizleCanvas() {
+        // Clear Canvas
+        clearBtn.onclick = clearCanvas;
+        function clearCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        // Renk ve kalınlık ayarları
-        renkInput.onchange = () => ctx.strokeStyle = renkInput.value;
-        kalinlikInput.onchange = () => {
-            kalinlik = Number(kalinlikInput.value);
-            ctx.lineWidth = kalinlik;
+        // Color and thickness settings
+        colorInput.onchange = () => ctx.strokeStyle = colorInput.value;
+        thicknessInput.onchange = () => {
+            thickness = Number(thicknessInput.value);
+            ctx.lineWidth = thickness;
         };
 
-        // Çizim işlemleri
-        canvas.onmousedown = function (e) { //Oyuncu canvasa mouse ile bastığında çalışır
-            ciziyor = true; //Kullanıcının çizime başladığını belirtir
-            ctx.beginPath(); //Bağımsız yeni bir çizgi çizer
-            ctx.moveTo(e.offsetX, e.offsetY); //Mouseun tıklandığı yerden çizimi başlatır
+        // Drawing operations
+        canvas.onmousedown = function (e) { 
+            isDrawing = true; 
+            ctx.beginPath(); 
+            ctx.moveTo(e.offsetX, e.offsetY); 
         };
 
-        canvas.onmouseup = function () { //mouseu bıraktığında çalışır
-            ciziyor = false; //Çizim biter
-            ctx.beginPath(); //Çizim yolu sıfırlanır
+        canvas.onmouseup = function () { 
+            isDrawing = false; 
+            ctx.beginPath(); 
         };
 
         canvas.onmousemove = function (e) {
-            if (!ciziyor) return; //mousea yıklanıp tıklanmadığı kontrol edilir
-            ctx.lineTo(e.offsetX, e.offsetY); //mouseun bulunduğu konuma çizgi çeker
-            ctx.stroke(); //çizgi ekrana çizilir
+            if (!isDrawing) return; 
+            ctx.lineTo(e.offsetX, e.offsetY); 
+            ctx.stroke(); 
         };
 
-        // Yönerge kontrolü
-        sonrakiBtn.onclick = function () {
-            if (aktifYonerge < sorular[aktifSoru].yonergeler.length - 1) {
-                aktifYonerge++;
-                soruGoster();
+        // Clue control
+        nextBtn.onclick = function () {
+            if (currentInstruction < questions[currentQuestion].instructions.length - 1) {
+                currentInstruction++;
+                showQuestion();
             }
         };
 
-        oncekiBtn.onclick = function () {
-            if (aktifYonerge > 0) {
-                aktifYonerge--;
-                soruGoster();
+        prevBtn.onclick = function () {
+            if (currentInstruction > 0) {
+                currentInstruction--;
+                showQuestion();
             }
         };
 
-        // Sonraki soru
-        function sonrakiSoru() {
-            tahminSayisi = 0;
-            tahminBtn.disabled = false;
-            aktifSoru++;
+        // Next question
+        function nextQuestion() {
+            guessCount = 0;
+            checkGuessBtn.disabled = false;
+            currentQuestion++;
 
-            if (aktifSoru >= sorular.length) {
-                alert(`Oyun bitti! Toplam puanınız: ${toplamPuan}`);
+            if (currentQuestion >= questions.length) {
+                alert(`Game Over! Your total score: ${totalScore}`);
                 clearInterval(timer);
                 location.reload();
                 return;
             }
 
-            aktifYonerge = 0;
-            zaman = 60;
-            zamanSayaci.textContent = `Süre: ${zaman}s`;
-            soruGoster();
-            temizleCanvas();
+            currentInstruction = 0;
+            timeLeft = 60;
+            timeCounter.textContent = `Time: ${timeLeft}s`;
+            showQuestion();
+            clearCanvas();
             clearInterval(timer);
-            zamanBaslat();
+            startTimer();
         }
 
-        sonrakiSoruBtn.onclick = sonrakiSoru;
+        nextQuestionBtn.onclick = nextQuestion;
 
-        // Modal pencere ve müzik ayarları
-        const arkaPlanMuzik = new Audio('./sounds/backgroundMusic.mp3');
-        const dogruSes = new Audio('./sounds/correct.mp3');
-        const yanlisSes = new Audio('./sounds/wrong.mp3');
+        // Modal window and music settings
+        const backgroundMusic = new Audio('./sounds/backgroundMusic.mp3');
+        const correctSound = new Audio('./sounds/correct.mp3');
+        const wrongSound = new Audio('./sounds/wrong.mp3');
 
-        arkaPlanMuzik.loop = true;
-        arkaPlanMuzik.volume = 0.5;
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = 0.5;
 
-        let muzikAcik = true;
+        let isMusicPlaying = true;
 
         document.getElementById('sesKontrolBtn').addEventListener('click', () => {
-            muzikAcik = !muzikAcik;
-            if (muzikAcik) {
-                arkaPlanMuzik.play();
+            isMusicPlaying = !isMusicPlaying;
+            if (isMusicPlaying) {
+                backgroundMusic.play();
                 document.getElementById('sesKontrolBtn').textContent = '🔊';
             } else {
-                arkaPlanMuzik.pause();
+                backgroundMusic.pause();
                 document.getElementById('sesKontrolBtn').textContent = '🔇';
             }
         });
 
-        // Sayfa yüklendiğinde oyunu başlat ve modalı aç
+        // Start game and open modal on page load
         document.addEventListener("DOMContentLoaded", () => {
-            canvasAyarla();
-            oyunuBaslat();
+            setupCanvas();
+            startGame();
 
-            const kurallarPenceresi = document.getElementById("kurallarPenceresi");
-            kurallarPenceresi.style.display = "block";
+            const rulesModal = document.getElementById("kurallarPenceresi");
+            rulesModal.style.display = "block";
 
-            const kapatBtn = document.getElementById("kapat");
-            kapatBtn.addEventListener("click", () => {
-                arkaPlanMuzik.play();
-                zamanBaslat();
-                kurallarPenceresi.style.display = "none";
+            const closeBtn = document.getElementById("kapat");
+            closeBtn.addEventListener("click", () => {
+                backgroundMusic.play();
+                startTimer();
+                rulesModal.style.display = "none";
             });
 
             window.addEventListener("click", (e) => {
-                if (e.target == kurallarPenceresi) {
-                    kurallarPenceresi.style.display = "none";
+                if (e.target == rulesModal) {
+                    rulesModal.style.display = "none";
                 }
             });
 
-            arkaPlanMuzik.play().catch(() => {
-                console.log("Ses otomatik olarak başlatılamadı.");
+            backgroundMusic.play().catch(() => {
+                console.log("Audio could not be started automatically.");
             });
         });
 
-        // Tahmin kontrol
-        tahminBtn.onclick = function () {
-            const tahmin = tahminInput.value.trim().toLowerCase();
-            const dogruCevap = sorular[aktifSoru].cevap.toLowerCase();
+        // Check Guess
+        checkGuessBtn.onclick = function () {
+            const guess = guessInput.value.trim().toLowerCase();
+            const correctAnswer = questions[currentQuestion].answer.toLowerCase();
 
-            if (tahmin === "") {
-                alert('Lütfen tahmininizi yazınız.');
+            if (guess === "") {
+                alert('Please type your guess.');
                 return;
             }
 
-            if (tahmin === dogruCevap) {
-                dogruSes.play();
-                const alinanPuan = 15;
-                const bonusPuan = Math.floor(zaman * 0.2);
-                toplamPuan += alinanPuan + bonusPuan;
-                puanAlani.textContent = 'Toplam Puan: ' + toplamPuan;
-                sonucAlani.textContent = `Doğru! +${alinanPuan} +${bonusPuan} (bonus) puan kazandınız.`;
-                sonrakiSoru();
+            if (guess === correctAnswer) {
+                correctSound.play();
+                const pointsEarned = 15;
+                const bonusPoints = Math.floor(timeLeft * 0.2);
+                totalScore += pointsEarned + bonusPoints;
+                scoreArea.textContent = 'Total Score: ' + totalScore;
+                resultArea.textContent = `Correct! You earned +${pointsEarned} +${bonusPoints} (bonus) points.`;
+                nextQuestion();
             } else {
-                yanlisSes.play();
-                toplamPuan -= 5;
-                if (toplamPuan < 0) toplamPuan = 0;
-                puanAlani.textContent = 'Toplam Puan: ' + toplamPuan;
-                tahminSayisi++;
-                if (tahminSayisi >= maxTahmin) {
-                    sonucAlani.textContent = `Tahmin hakkınız doldu. Doğru cevap: ${dogruCevap}`;
-                    tahminBtn.disabled = true;
-                    sonrakiSoruBtn.style.display = 'inline-block';
+                wrongSound.play();
+                totalScore -= 5;
+                if (totalScore < 0) totalScore = 0;
+                scoreArea.textContent = 'Total Score: ' + totalScore;
+                guessCount++;
+                if (guessCount >= maxGuesses) {
+                    resultArea.textContent = `Out of guesses. Correct answer: ${correctAnswer}`;
+                    checkGuessBtn.disabled = true;
+                    nextQuestionBtn.style.display = 'inline-block';
                 } else {
-                    sonucAlani.textContent = `Yanlış tahmin. Kalan tahmin hakkınız: ${maxTahmin - tahminSayisi}`;
+                    resultArea.textContent = `Wrong guess. Remaining guesses: ${maxGuesses - guessCount}`;
                 }
             }
 
-            tahminInput.value = '';
+            guessInput.value = '';
         };
 
     </script>
