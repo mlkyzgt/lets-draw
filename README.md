@@ -51,7 +51,7 @@ Below are screenshots from different stages of the game:
 ![Main Screen](screenshots/homescreen.png)
 
 ### Drawing Example
-![Drawing Stage](images/example.png)
+![Drawing Stage](screenshots/example.png)
 
 ---
 
